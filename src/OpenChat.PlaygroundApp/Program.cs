@@ -22,6 +22,13 @@ if (settings.Help == true)
 builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
+// Configure OpenTelemetry
+string sourceName = Guid.NewGuid().ToString();
+TracerProvider tracerProvider = OpenTelemetry.Sdk.CreateTracerProviderBuilder()
+    .AddSource(sourceName)
+    .AddConsoleExporter()
+    .Build();
+
 // Configure Language Model Client
 var chatClient = await LanguageModelConnector.CreateChatClientAsync(settings);
 IDistributedCache cache = new MemoryDistributedCache(Options.Create(new MemoryDistributedCacheOptions()));
@@ -29,6 +36,10 @@ IDistributedCache cache = new MemoryDistributedCache(Options.Create(new MemoryDi
 builder.Services.AddChatClient(chatClient)
                 .UseDistributedCache(cache)
                 .UseFunctionInvocation()
+                .UseOpenTelemetry(
+                    sourceName: sourceName,
+                    configure: c => c.EnableSensitiveData = true
+                )
                 .UseLogging();
 
 var app = builder.Build();
