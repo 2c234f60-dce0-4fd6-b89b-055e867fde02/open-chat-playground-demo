@@ -54,8 +54,6 @@ public partial class Chat : ComponentBase, IDisposable
 
         await foreach (var update in ChatClient.GetStreamingResponseAsync([.. messages], chatOptions, currentResponseCancellation.Token))
         {
-            // [DEBUG] tae0y, 대화 히스토리를 저장할때 불필요하게 공백을 추가함
-            //messages.AddMessages(update, filter: c => c is not TextContent);
             responseText.Text += update.Text;
             ChatMessageItem.NotifyChanged(currentResponseMessage);
         }
