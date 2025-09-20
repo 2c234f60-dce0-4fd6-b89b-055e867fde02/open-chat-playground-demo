@@ -2,7 +2,7 @@
 
 <PageTitle>OpenChat Playground</PageTitle>
 
-<ChatHeader OnNewChat="@ResetConversationAsync" />
+<ChatHeader OnNewChat="@ResetConversationAsync" ConnectorTypeName="@ConnectorTypeName" />
 
 <ChatMessageList Messages="@messages" InProgressMessage="@currentResponseMessage">
     <NoMessagesContent>

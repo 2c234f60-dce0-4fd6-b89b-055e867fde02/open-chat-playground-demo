@@ -19,6 +19,8 @@ if (settings.Help == true)
     return;
 }
 
+builder.Services.AddSingleton(new OpenChat.PlaygroundApp.Abstractions.ConnectorTypeInfo(settings.ConnectorType.ToString()));
+
 builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 

@@ -23,6 +23,11 @@ public partial class Chat : ComponentBase, IDisposable
     [Inject]
     public required NavigationManager Nav { get; set; }
 
+    [Inject]
+    public required OpenChat.PlaygroundApp.Abstractions.ConnectorTypeInfo ConnectorTypeInfo { get; set; }
+
+    public string ConnectorTypeName => ConnectorTypeInfo.Name;
+
     protected override void OnInitialized()
     {
         messages.Add(new(ChatRole.System, SystemPrompt));
