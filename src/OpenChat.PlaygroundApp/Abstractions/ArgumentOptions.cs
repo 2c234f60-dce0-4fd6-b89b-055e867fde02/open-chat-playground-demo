@@ -12,6 +12,12 @@ public abstract class ArgumentOptions
     private static readonly (ConnectorType ConnectorType, string Argument, bool IsSwitch)[] arguments =
     [
         // Amazon Bedrock
+        (ConnectorType.AmazonBedrock, "--endpoint", false),
+        (ConnectorType.AmazonBedrock, "--region", false),
+        (ConnectorType.AmazonBedrock, "--model", false),
+        (ConnectorType.AmazonBedrock, "--access-key", false),
+        (ConnectorType.AmazonBedrock, "--secret-access-key", false),
+        (ConnectorType.AmazonBedrock, "--api-key", false),
         // Azure AI Foundry
         (ConnectorType.AzureAIFoundry, "--endpoint", false),
         (ConnectorType.AzureAIFoundry, "--api-key", false),
@@ -21,9 +27,12 @@ public abstract class ArgumentOptions
         (ConnectorType.GitHubModels, "--token", false),
         (ConnectorType.GitHubModels, "--model", false),
         // Google Vertex AI
+        (ConnectorType.GoogleVertexAI, "--endpoint", false),
         (ConnectorType.GoogleVertexAI, "--api-key", false),
         (ConnectorType.GoogleVertexAI, "--model", false),
         // Docker Model Runner
+        (ConnectorType.DockerModelRunner, "--base-url", false),
+        (ConnectorType.DockerModelRunner, "--model", false),
         // Foundry Local
         (ConnectorType.FoundryLocal, "--alias", false),
         // Hugging Face
@@ -39,6 +48,9 @@ public abstract class ArgumentOptions
         (ConnectorType.LG, "--base-url", false),
         (ConnectorType.LG, "--model", false),
         // Naver
+        (ConnectorType.Naver, "--base-url", false),
+        (ConnectorType.Naver, "--api-key", false),
+        (ConnectorType.Naver, "--model", false),
         // OpenAI
         (ConnectorType.OpenAI, "--api-key", false),
         (ConnectorType.OpenAI, "--model", false),
@@ -153,80 +165,78 @@ public abstract class ArgumentOptions
 
         switch (options)
         {
-            // case AmazonBedrockArgumentOptions amazonBedrock:
-            //     break;
-
+            case AmazonBedrockArgumentOptions amazonBedrock:
+                settings.AmazonBedrock ??= new AmazonBedrockSettings();
+                settings.AmazonBedrock.Endpoint = amazonBedrock.Endpoint ?? settings.AmazonBedrock.Endpoint;
+                settings.AmazonBedrock.Region = amazonBedrock.Region ?? settings.AmazonBedrock.Region;
+                settings.AmazonBedrock.Model = amazonBedrock.Model ?? settings.AmazonBedrock.Model;
+                settings.AmazonBedrock.AccessKey = amazonBedrock.AccessKey ?? settings.AmazonBedrock.AccessKey;
+                settings.AmazonBedrock.SecretAccessKey = amazonBedrock.SecretAccessKey ?? settings.AmazonBedrock.SecretAccessKey;
+                settings.AmazonBedrock.ApiKey = amazonBedrock.ApiKey ?? settings.AmazonBedrock.ApiKey;
+                break;
             case AzureAIFoundryArgumentOptions azureAIFoundry:
                 settings.AzureAIFoundry ??= new AzureAIFoundrySettings();
                 settings.AzureAIFoundry.Endpoint = azureAIFoundry.Endpoint ?? settings.AzureAIFoundry.Endpoint;
                 settings.AzureAIFoundry.ApiKey = azureAIFoundry.ApiKey ?? settings.AzureAIFoundry.ApiKey;
                 settings.AzureAIFoundry.DeploymentName = azureAIFoundry.DeploymentName ?? settings.AzureAIFoundry.DeploymentName;
                 break;
-
             case GitHubModelsArgumentOptions github:
                 settings.GitHubModels ??= new GitHubModelsSettings();
                 settings.GitHubModels.Endpoint = github.Endpoint ?? settings.GitHubModels.Endpoint;
                 settings.GitHubModels.Token = github.Token ?? settings.GitHubModels.Token;
                 settings.GitHubModels.Model = github.Model ?? settings.GitHubModels.Model;
                 break;
-            
             case GoogleVertexAIArgumentOptions googleVertexAI:
                 settings.GoogleVertexAI ??= new GoogleVertexAISettings();
                 settings.GoogleVertexAI.ApiKey = googleVertexAI.ApiKey ?? settings.GoogleVertexAI.ApiKey;
                 settings.GoogleVertexAI.Model = googleVertexAI.Model ?? settings.GoogleVertexAI.Model;
                 break;
-
-            // case DockerModelRunnerArgumentOptions dockerModelRunner:
-            //     break;
-
+            case DockerModelRunnerArgumentOptions dockerModelRunner:
+                settings.DockerModelRunner ??= new DockerModelRunnerSettings();
+                settings.DockerModelRunner.BaseUrl = dockerModelRunner.BaseUrl ?? settings.DockerModelRunner.BaseUrl;
+                settings.DockerModelRunner.Model = dockerModelRunner.Model ?? settings.DockerModelRunner.Model;
+                break;
             case FoundryLocalArgumentOptions foundryLocal:
                 settings.FoundryLocal ??= new FoundryLocalSettings();
                 settings.FoundryLocal.Alias = foundryLocal.Alias ?? settings.FoundryLocal.Alias;
                 break;
-
             case HuggingFaceArgumentOptions huggingFace:
                 settings.HuggingFace ??= new HuggingFaceSettings();
                 settings.HuggingFace.BaseUrl = huggingFace.BaseUrl ?? settings.HuggingFace.BaseUrl;
                 settings.HuggingFace.Model = huggingFace.Model ?? settings.HuggingFace.Model;
                 break;
-            
             case OllamaArgumentOptions ollama:
                 settings.Ollama ??= new OllamaSettings();
                 settings.Ollama.BaseUrl = ollama.BaseUrl ?? settings.Ollama.BaseUrl;
                 settings.Ollama.Model = ollama.Model ?? settings.Ollama.Model;
                 break;
-
-            // case NaverArgumentOptions naver:
-            //     break;
-
             case AnthropicArgumentOptions anthropic:
                 settings.Anthropic ??= new AnthropicSettings();
                 settings.Anthropic.ApiKey = anthropic.ApiKey ?? settings.Anthropic.ApiKey;
                 settings.Anthropic.Model = anthropic.Model ?? settings.Anthropic.Model;
                 break;
-
             case LGArgumentOptions lg:
                 settings.LG ??= new LGSettings();
                 settings.LG.BaseUrl = lg.BaseUrl ?? settings.LG.BaseUrl;
                 settings.LG.Model = lg.Model ?? settings.LG.Model;
                 break;
-
-            // case NaverArgumentOptions naver:
-            //     break;
-
+            case NaverArgumentOptions naver:
+                settings.Naver ??= new NaverSettings();
+                settings.Naver.BaseUrl = naver.BaseUrl ?? settings.Naver.BaseUrl;
+                settings.Naver.ApiKey = naver.ApiKey ?? settings.Naver.ApiKey;
+                settings.Naver.Model = naver.Model ?? settings.Naver.Model;
+                break;
             case OpenAIArgumentOptions openai:
                 settings.OpenAI ??= new OpenAISettings();
                 settings.OpenAI.ApiKey = openai.ApiKey ?? settings.OpenAI.ApiKey;
                 settings.OpenAI.Model = openai.Model ?? settings.OpenAI.Model;
                 break;
-
             case UpstageArgumentOptions upstage:
                 settings.Upstage ??= new UpstageSettings();
                 settings.Upstage.BaseUrl = upstage.BaseUrl ?? settings.Upstage.BaseUrl;
                 settings.Upstage.ApiKey = upstage.ApiKey ?? settings.Upstage.ApiKey;
                 settings.Upstage.Model = upstage.Model ?? settings.Upstage.Model;
                 break;
-
             default:
                 break;
         }
@@ -299,8 +309,13 @@ public abstract class ArgumentOptions
         Console.WriteLine("  ** Amazon Bedrock: **");
         Console.ForegroundColor = foregroundColor;
 
-        Console.WriteLine("  TBD");
-        Console.WriteLine();
+    Console.WriteLine("  --endpoint           The Amazon Bedrock endpoint URL.");
+    Console.WriteLine("  --region             The AWS region for Bedrock.");
+    Console.WriteLine("  --model              The model name for Bedrock.");
+    Console.WriteLine("  --access-key         The AWS access key.");
+    Console.WriteLine("  --secret-access-key  The AWS secret access key.");
+    Console.WriteLine("  --api-key            The AWS session token (optional).");
+    Console.WriteLine();
     }
 
     private static void DisplayHelpForAzureAIFoundry()
@@ -336,8 +351,10 @@ public abstract class ArgumentOptions
         Console.WriteLine("  ** Google Vertex AI: **");
         Console.ForegroundColor = foregroundColor;
 
-        Console.WriteLine("  TBD");
-        Console.WriteLine();
+    Console.WriteLine("  --endpoint           The Google Vertex AI endpoint URL.");
+    Console.WriteLine("  --api-key            The Google Vertex AI API key.");
+    Console.WriteLine("  --model              The model name for Vertex AI.");
+    Console.WriteLine();
     }
 
     private static void DisplayHelpForDockerModelRunner()
@@ -347,8 +364,9 @@ public abstract class ArgumentOptions
         Console.WriteLine("  ** Docker Model Runner: **");
         Console.ForegroundColor = foregroundColor;
 
-        Console.WriteLine("  TBD");
-        Console.WriteLine();
+    Console.WriteLine("  --base-url           The Docker Model Runner base URL. Default to 'http://localhost:11434'");
+    Console.WriteLine("  --model              The model name for Docker Model Runner.");
+    Console.WriteLine();
     }
 
     private static void DisplayHelpForFoundryLocal()
@@ -358,8 +376,8 @@ public abstract class ArgumentOptions
         Console.WriteLine("  ** Foundry Local: **");
         Console.ForegroundColor = foregroundColor;
 
-        Console.WriteLine("  TBD");
-        Console.WriteLine();
+    Console.WriteLine("  --alias              The alias for Foundry Local model.");
+    Console.WriteLine();
     }
 
     private static void DisplayHelpForHuggingFace()
@@ -417,8 +435,10 @@ public abstract class ArgumentOptions
         Console.WriteLine("  ** Naver: **");
         Console.ForegroundColor = foregroundColor;
 
-        Console.WriteLine("  TBD");
-        Console.WriteLine();
+    Console.WriteLine("  --base-url           The Naver API endpoint URL.");
+    Console.WriteLine("  --api-key            The Naver API key.");
+    Console.WriteLine("  --model              The Naver model name.");
+    Console.WriteLine();
     }
 
     private static void DisplayHelpForOpenAI()
