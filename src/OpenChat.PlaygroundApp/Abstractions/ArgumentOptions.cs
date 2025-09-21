@@ -12,7 +12,6 @@ public abstract class ArgumentOptions
     private static readonly (ConnectorType ConnectorType, string Argument, bool IsSwitch)[] arguments =
     [
         // Amazon Bedrock
-        (ConnectorType.AmazonBedrock, "--endpoint", false),
         (ConnectorType.AmazonBedrock, "--region", false),
         (ConnectorType.AmazonBedrock, "--model", false),
         (ConnectorType.AmazonBedrock, "--access-key", false),
@@ -167,7 +166,6 @@ public abstract class ArgumentOptions
         {
             case AmazonBedrockArgumentOptions amazonBedrock:
                 settings.AmazonBedrock ??= new AmazonBedrockSettings();
-                settings.AmazonBedrock.Endpoint = amazonBedrock.Endpoint ?? settings.AmazonBedrock.Endpoint;
                 settings.AmazonBedrock.Region = amazonBedrock.Region ?? settings.AmazonBedrock.Region;
                 settings.AmazonBedrock.Model = amazonBedrock.Model ?? settings.AmazonBedrock.Model;
                 settings.AmazonBedrock.AccessKey = amazonBedrock.AccessKey ?? settings.AmazonBedrock.AccessKey;
