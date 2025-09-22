@@ -8,7 +8,6 @@ namespace OpenChat.PlaygroundApp.Options;
 /// </summary>
 public class GoogleVertexAIArgumentOptions : ArgumentOptions
 {
-    public string? Endpoint { get; set; }
     public string? ApiKey { get; set; }
     public string? Model { get; set; }
 

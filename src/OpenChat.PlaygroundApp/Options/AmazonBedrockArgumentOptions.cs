@@ -50,12 +50,6 @@ public class AmazonBedrockArgumentOptions : ArgumentOptions
         {
             switch (args[i])
             {
-                case "--endpoint":
-                    if (i + 1 < args.Length)
-                    {
-                        this.Endpoint = args[++i];
-                    }
-                    break;
                 case "--region":
                     if (i + 1 < args.Length)
                     {
