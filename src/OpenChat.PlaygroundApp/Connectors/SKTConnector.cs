@@ -2,8 +2,7 @@ using OpenChat.PlaygroundApp.Abstractions;
 using OpenChat.PlaygroundApp.Configurations;
 
 using Microsoft.Extensions.AI;
-using System.ClientModel;
-using OpenAI;
+using OllamaSharp;
 
 namespace OpenChat.PlaygroundApp.Connectors;
 
@@ -27,15 +26,12 @@ public class SKTConnector(AppSettings settings) : LanguageModelConnector(setting
     {
         var settings = this.Settings as SKTSettings;
 
-        var credential = new ApiKeyCredential(settings!.ApiKey!);
-        var options = new OpenAIClientOptions()
+        var model = settings!.Model!;
+        var client = new OllamaApiClient(new Uri(settings.BaseUrl!))
         {
-            Endpoint = new Uri(settings.BaseUrl!)
+            SelectedModel = model
         };
-
-        var client = new OpenAIClient(credential, options);
-        var chatClient = client.GetChatClient(settings.Model)
-                               .AsIChatClient();
+        var chatClient = client as IChatClient;
 
         return await Task.FromResult(chatClient).ConfigureAwait(false);
     }
