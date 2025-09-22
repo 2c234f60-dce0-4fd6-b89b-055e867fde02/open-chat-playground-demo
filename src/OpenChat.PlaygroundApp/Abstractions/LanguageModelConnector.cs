@@ -47,6 +47,8 @@ public abstract class LanguageModelConnector(LanguageModelSettings? settings)
             ConnectorType.Anthropic => new AnthropicConnector(settings),
             ConnectorType.LG => new LGConnector(settings),
             ConnectorType.Naver => new NaverConnector(settings),
+            ConnectorType.NC => new NCConnector(settings),
+            ConnectorType.SKT => new SKTConnector(settings),
             ConnectorType.OpenAI => new OpenAIConnector(settings),
             ConnectorType.Upstage => new UpstageConnector(settings),
             _ => throw new NotSupportedException($"Connector type '{settings.ConnectorType}' is not supported.")

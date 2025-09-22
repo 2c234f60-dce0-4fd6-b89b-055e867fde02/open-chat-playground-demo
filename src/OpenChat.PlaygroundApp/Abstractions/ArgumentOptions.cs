@@ -50,6 +50,14 @@ public abstract class ArgumentOptions
         (ConnectorType.Naver, "--base-url", false),
         (ConnectorType.Naver, "--api-key", false),
         (ConnectorType.Naver, "--model", false),
+        // NC
+        (ConnectorType.NC, "--base-url", false),
+        (ConnectorType.NC, "--api-key", false),
+        (ConnectorType.NC, "--model", false),
+        // SKT
+        (ConnectorType.SKT, "--base-url", false),
+        (ConnectorType.SKT, "--api-key", false),
+        (ConnectorType.SKT, "--model", false),
         // OpenAI
         (ConnectorType.OpenAI, "--api-key", false),
         (ConnectorType.OpenAI, "--model", false),
@@ -224,6 +232,18 @@ public abstract class ArgumentOptions
                 settings.Naver.ApiKey = naver.ApiKey ?? settings.Naver.ApiKey;
                 settings.Naver.Model = naver.Model ?? settings.Naver.Model;
                 break;
+            case NCArgumentOptions nc:
+                settings.NC ??= new NCSettings();
+                settings.NC.BaseUrl = nc.BaseUrl ?? settings.NC.BaseUrl;
+                settings.NC.ApiKey = nc.ApiKey ?? settings.NC.ApiKey;
+                settings.NC.Model = nc.Model ?? settings.NC.Model;
+                break;
+            case SKTArgumentOptions skt:
+                settings.SKT ??= new SKTSettings();
+                settings.SKT.BaseUrl = skt.BaseUrl ?? settings.SKT.BaseUrl;
+                settings.SKT.ApiKey = skt.ApiKey ?? settings.SKT.ApiKey;
+                settings.SKT.Model = skt.Model ?? settings.SKT.Model;
+                break;
             case OpenAIArgumentOptions openai:
                 settings.OpenAI ??= new OpenAISettings();
                 settings.OpenAI.ApiKey = openai.ApiKey ?? settings.OpenAI.ApiKey;
@@ -262,7 +282,7 @@ public abstract class ArgumentOptions
         Console.WriteLine("  --connector-type|-c  The connector type. Supporting connectors are:");
         Console.WriteLine("                       - AmazonBedrock, AzureAIFoundry, GitHubModels, GoogleVertexAI");
         Console.WriteLine("                       - DockerModelRunner, FoundryLocal, HuggingFace, Ollama");
-        Console.WriteLine("                       - Anthropic, LG, Naver, OpenAI, Upstage");
+        Console.WriteLine("                       - Anthropic, LG, Naver, NC, SKT, OpenAI, Upstage");
         Console.WriteLine();
         DisplayHelpForAmazonBedrock();
         DisplayHelpForAzureAIFoundry();
@@ -275,9 +295,35 @@ public abstract class ArgumentOptions
         DisplayHelpForAnthropic();
         DisplayHelpForLG();
         DisplayHelpForNaver();
+        DisplayHelpForNC();
+        DisplayHelpForSKT();
         DisplayHelpForOpenAI();
         DisplayHelpForUpstage();
         Console.WriteLine("  --help|-h            Show this help message.");
+    }
+
+    private static void DisplayHelpForNC()
+    {
+        var foregroundColor = Console.ForegroundColor;
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
+        Console.WriteLine("  ** NC: **");
+        Console.ForegroundColor = foregroundColor;
+        Console.WriteLine("  --base-url           The NC API endpoint URL.");
+        Console.WriteLine("  --api-key            The NC API key.");
+        Console.WriteLine("  --model              The NC model name.");
+        Console.WriteLine();
+    }
+
+    private static void DisplayHelpForSKT()
+    {
+        var foregroundColor = Console.ForegroundColor;
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
+        Console.WriteLine("  ** SKT: **");
+        Console.ForegroundColor = foregroundColor;
+        Console.WriteLine("  --base-url           The SKT API endpoint URL.");
+        Console.WriteLine("  --api-key            The SKT API key.");
+        Console.WriteLine("  --model              The SKT model name.");
+        Console.WriteLine();
     }
 
     /// <summary>
