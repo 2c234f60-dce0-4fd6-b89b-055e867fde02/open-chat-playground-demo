@@ -65,4 +65,14 @@ builder.AddProject<Projects.OpenChat_PlaygroundApp>("Upstage")
     .WithEnvironment("ASPNETCORE_URLS", "http://*:5293")
     .WithUrl("http://localhost:5293");
 
+builder.AddProject<Projects.OpenChat_PlaygroundApp>("NC")
+    .WithArgs("--connector-type", "NC")
+    .WithEnvironment("ASPNETCORE_URLS", "http://*:5294")
+    .WithUrl("http://localhost:5294");
+
+builder.AddProject<Projects.OpenChat_PlaygroundApp>("SKT")
+    .WithArgs("--connector-type", "SKT")
+    .WithEnvironment("ASPNETCORE_URLS", "http://*:5295")
+    .WithUrl("http://localhost:5295");
+
 builder.Build().Run();
