@@ -15,7 +15,6 @@ public class SKTArgumentOptions : ArgumentOptions
         config.Bind(settings);
         var skt = settings.SKT;
         this.BaseUrl ??= skt?.BaseUrl;
-        this.ApiKey ??= skt?.ApiKey;
         this.Model ??= skt?.Model;
         for (var i = 0; i < args.Length; i++)
         {
@@ -23,9 +22,6 @@ public class SKTArgumentOptions : ArgumentOptions
             {
                 case "--base-url":
                     if (i + 1 < args.Length) this.BaseUrl = args[++i];
-                    break;
-                case "--api-key":
-                    if (i + 1 < args.Length) this.ApiKey = args[++i];
                     break;
                 case "--model":
                     if (i + 1 < args.Length) this.Model = args[++i];

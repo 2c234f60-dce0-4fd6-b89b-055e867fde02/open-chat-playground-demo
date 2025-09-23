@@ -10,6 +10,5 @@ public partial class AppSettings
 public class SKTSettings : LanguageModelSettings
 {
     public string? BaseUrl { get; set; }
-    public string? ApiKey { get; set; }
     public string? Model { get; set; }
 }

@@ -15,8 +15,6 @@ public class SKTConnector(AppSettings settings) : LanguageModelConnector(setting
             throw new InvalidOperationException("Missing configuration: SKT.");
         if (string.IsNullOrWhiteSpace(settings.BaseUrl))
             throw new InvalidOperationException("Missing configuration: SKT:BaseUrl.");
-        if (string.IsNullOrWhiteSpace(settings.ApiKey))
-            throw new InvalidOperationException("Missing configuration: SKT:ApiKey.");
         if (string.IsNullOrWhiteSpace(settings.Model))
             throw new InvalidOperationException("Missing configuration: SKT:Model.");
         return true;

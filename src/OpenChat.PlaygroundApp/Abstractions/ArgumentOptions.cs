@@ -241,7 +241,6 @@ public abstract class ArgumentOptions
             case SKTArgumentOptions skt:
                 settings.SKT ??= new SKTSettings();
                 settings.SKT.BaseUrl = skt.BaseUrl ?? settings.SKT.BaseUrl;
-                settings.SKT.ApiKey = skt.ApiKey ?? settings.SKT.ApiKey;
                 settings.SKT.Model = skt.Model ?? settings.SKT.Model;
                 break;
             case OpenAIArgumentOptions openai:
