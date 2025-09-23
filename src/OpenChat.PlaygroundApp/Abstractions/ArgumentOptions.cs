@@ -52,11 +52,9 @@ public abstract class ArgumentOptions
         (ConnectorType.Naver, "--model", false),
         // NC
         (ConnectorType.NC, "--base-url", false),
-        (ConnectorType.NC, "--api-key", false),
         (ConnectorType.NC, "--model", false),
         // SKT
         (ConnectorType.SKT, "--base-url", false),
-        (ConnectorType.SKT, "--api-key", false),
         (ConnectorType.SKT, "--model", false),
         // OpenAI
         (ConnectorType.OpenAI, "--api-key", false),
@@ -235,7 +233,6 @@ public abstract class ArgumentOptions
             case NCArgumentOptions nc:
                 settings.NC ??= new NCSettings();
                 settings.NC.BaseUrl = nc.BaseUrl ?? settings.NC.BaseUrl;
-                settings.NC.ApiKey = nc.ApiKey ?? settings.NC.ApiKey;
                 settings.NC.Model = nc.Model ?? settings.NC.Model;
                 break;
             case SKTArgumentOptions skt:
@@ -308,7 +305,6 @@ public abstract class ArgumentOptions
         Console.WriteLine("  ** NC: **");
         Console.ForegroundColor = foregroundColor;
         Console.WriteLine("  --base-url           The NC API endpoint URL.");
-        Console.WriteLine("  --api-key            The NC API key.");
         Console.WriteLine("  --model              The NC model name.");
         Console.WriteLine();
     }
@@ -320,7 +316,6 @@ public abstract class ArgumentOptions
         Console.WriteLine("  ** SKT: **");
         Console.ForegroundColor = foregroundColor;
         Console.WriteLine("  --base-url           The SKT API endpoint URL.");
-        Console.WriteLine("  --api-key            The SKT API key.");
         Console.WriteLine("  --model              The SKT model name.");
         Console.WriteLine();
     }

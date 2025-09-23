@@ -2,8 +2,7 @@ using OpenChat.PlaygroundApp.Abstractions;
 using OpenChat.PlaygroundApp.Configurations;
 
 using Microsoft.Extensions.AI;
-using System.ClientModel;
-using OpenAI;
+using OllamaSharp;
 
 namespace OpenChat.PlaygroundApp.Connectors;
 
@@ -16,8 +15,6 @@ public class NCConnector(AppSettings settings) : LanguageModelConnector(settings
             throw new InvalidOperationException("Missing configuration: NC.");
         if (string.IsNullOrWhiteSpace(settings.BaseUrl))
             throw new InvalidOperationException("Missing configuration: NC:BaseUrl.");
-        if (string.IsNullOrWhiteSpace(settings.ApiKey))
-            throw new InvalidOperationException("Missing configuration: NC:ApiKey.");
         if (string.IsNullOrWhiteSpace(settings.Model))
             throw new InvalidOperationException("Missing configuration: NC:Model.");
         return true;
@@ -27,15 +24,12 @@ public class NCConnector(AppSettings settings) : LanguageModelConnector(settings
     {
         var settings = this.Settings as NCSettings;
 
-        var credential = new ApiKeyCredential(settings!.ApiKey!);
-        var options = new OpenAIClientOptions()
+        var model = settings!.Model!;
+        var client = new OllamaApiClient(new Uri(settings.BaseUrl!))
         {
-            Endpoint = new Uri(settings.BaseUrl!)
+            SelectedModel = model
         };
-
-        var client = new OpenAIClient(credential, options);
-        var chatClient = client.GetChatClient(settings.Model)
-                               .AsIChatClient();
+        var chatClient = client as IChatClient;
 
         return await Task.FromResult(chatClient).ConfigureAwait(false);
     }

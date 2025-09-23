@@ -6,7 +6,6 @@ namespace OpenChat.PlaygroundApp.Options;
 public class NCArgumentOptions : ArgumentOptions
 {
     public string? BaseUrl { get; set; }
-    public string? ApiKey { get; set; }
     public string? Model { get; set; }
 
     protected override void ParseOptions(IConfiguration config, string[] args)
@@ -15,7 +14,6 @@ public class NCArgumentOptions : ArgumentOptions
         config.Bind(settings);
         var nc = settings.NC;
         this.BaseUrl ??= nc?.BaseUrl;
-        this.ApiKey ??= nc?.ApiKey;
         this.Model ??= nc?.Model;
         for (var i = 0; i < args.Length; i++)
         {
@@ -23,9 +21,6 @@ public class NCArgumentOptions : ArgumentOptions
             {
                 case "--base-url":
                     if (i + 1 < args.Length) this.BaseUrl = args[++i];
-                    break;
-                case "--api-key":
-                    if (i + 1 < args.Length) this.ApiKey = args[++i];
                     break;
                 case "--model":
                     if (i + 1 < args.Length) this.Model = args[++i];
