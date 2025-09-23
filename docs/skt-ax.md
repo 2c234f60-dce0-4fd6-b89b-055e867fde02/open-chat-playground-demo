@@ -1,14 +1,7 @@
 working on ...
 
-> https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html#extra-parameters_1
+> https://huggingface.co/cookieshake/A.X-4.0-Light-Imatrix-GGUF
 
-```
-git clone https://github.com/vllm-project/vllm.git          
-cd vllm                                
-uv pip install -r requirements/cpu.txt
-uv pip install -e .
-```
+1. 모델파일 작성
 
-```
-vllm serve skt/A.X-4.0-Light --max-model-len 2048
-```
+1. 동일 디렉토리에서 ollama create
