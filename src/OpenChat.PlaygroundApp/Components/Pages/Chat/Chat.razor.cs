@@ -41,15 +41,6 @@ public partial class Chat : ComponentBase, IDisposable
         messages.Add(userMessage);
         await chatInput!.FocusAsync();
 
-        // [DEBUG] tae0y, 아래와 같이 디버깅해보니 messages.AddMessages(update, filter: c => c is not TextContent); 구문에서 불필요하게 공백을 추가함
-        // Console.WriteLine($"User message added: {userMessage}");
-        // Console.WriteLine($"Total messages Count: {messages.Count}");
-        // for (int i = 0; i < messages.Count; i++)
-        // {
-        //     var msg = messages[i];
-        //     Console.WriteLine($"Message {i}: Role={msg.Role}, Content={msg}");
-        // }
-
         // Stream and display a new response from the IChatClient
         var responseText = new TextContent("");
         currentResponseMessage = new ChatMessage(ChatRole.Assistant, [responseText]);
@@ -57,6 +48,7 @@ public partial class Chat : ComponentBase, IDisposable
 
         await InvokeAsync(StateHasChanged);
 
+        // 👉👉 아래 구문에서 언제나 `GetStreamingResponseAsync` 메서드를 호출 👈👈
         await foreach (var update in ChatClient.GetStreamingResponseAsync([.. messages], chatOptions, currentResponseCancellation.Token))
         {
             responseText.Text += update.Text;
