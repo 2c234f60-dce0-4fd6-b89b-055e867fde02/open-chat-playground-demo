@@ -3,6 +3,7 @@ using OpenChat.PlaygroundApp.Configurations;
 
 using Microsoft.Extensions.AI;
 using Mscc.GenerativeAI.Microsoft;
+using Mscc.GenerativeAI;
 
 namespace OpenChat.PlaygroundApp.Connectors;
 
@@ -23,8 +24,20 @@ public class GoogleVertexAIConnector(AppSettings settings) : LanguageModelConnec
     public override async Task<IChatClient> GetChatClientAsync()
     {
         var settings = this.Settings as GoogleVertexAISettings;
-        IChatClient chatClient = new GeminiChatClient(settings!.ApiKey!, settings!.Model!);
 
-        return await Task.FromResult(chatClient).ConfigureAwait(false);
+        // 기존 : GeminiClient 사용 
+        // IChatClient chatClient = new GeminiChatClient(settings!.ApiKey!, settings!.Model!);
+        // return await Task.FromResult(chatClient).ConfigureAwait(false);
+
+        // 변경1 : VertexAI 사용
+        var vertexAI = new VertexAI(projectId: settings!.ProjectId!, region: settings!.Region!);
+        var model = vertexAI.GenerativeModel(model: settings!.Model!);
+        model.AccessToken = settings!.AccessToken!;
+        return await Task.FromResult(model.AsIChatClient()).ConfigureAwait(false);
+
+        // 변경2 : GoogleAI 사용
+        // var googleAI = new GoogleAI(accessToken: settings!.AccessToken!);
+        // var model = googleAI.GenerativeModel(model: settings.Model!);
+        // return await Task.FromResult(model.AsIChatClient()).ConfigureAwait(false);
     }
 }

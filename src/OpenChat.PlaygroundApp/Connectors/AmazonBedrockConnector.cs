@@ -16,8 +16,12 @@ public class AmazonBedrockConnector(AppSettings settings) : LanguageModelConnect
             throw new InvalidOperationException("Missing configuration: AmazonBedrock.");
         if (string.IsNullOrWhiteSpace(settings.Region))
             throw new InvalidOperationException("Missing configuration: AmazonBedrock:Region.");
-        if (string.IsNullOrWhiteSpace(settings.Model))
-            throw new InvalidOperationException("Missing configuration: AmazonBedrock:Model.");
+        if (string.IsNullOrWhiteSpace(settings.ModelId))
+            throw new InvalidOperationException("Missing configuration: AmazonBedrock:ModelId.");
+        if (string.IsNullOrWhiteSpace(settings.AccessKeyId))
+            throw new InvalidOperationException("Missing configuration: AmazonBedrock:AccessKeyId.");
+        if (string.IsNullOrWhiteSpace(settings.SecretAccessKey))
+            throw new InvalidOperationException("Missing configuration: AmazonBedrock:SecretAccessKey.");
         return true;
     }
 
@@ -26,12 +30,12 @@ public class AmazonBedrockConnector(AppSettings settings) : LanguageModelConnect
         var settings = this.Settings as AmazonBedrockSettings;
 
         var client = new AmazonBedrockRuntimeClient(
-            awsAccessKeyId: settings!.AccessKey!,
+            awsAccessKeyId: settings!.AccessKeyId!,
             awsSecretAccessKey: settings!.SecretAccessKey!,
             region: RegionEndpoint.GetBySystemName(settings!.Region!)
         );
         var chatClient = client.AsIChatClient(
-            settings!.Model!
+            settings!.ModelId!
         );
 
         return await Task.FromResult(chatClient).ConfigureAwait(false);

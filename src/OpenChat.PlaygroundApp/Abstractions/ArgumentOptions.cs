@@ -25,9 +25,11 @@ public abstract class ArgumentOptions
         (ConnectorType.GitHubModels, "--token", false),
         (ConnectorType.GitHubModels, "--model", false),
         // Google Vertex AI
-        (ConnectorType.GoogleVertexAI, "--endpoint", false),
         (ConnectorType.GoogleVertexAI, "--api-key", false),
         (ConnectorType.GoogleVertexAI, "--model", false),
+        (ConnectorType.GoogleVertexAI, "--access-token", false),
+        (ConnectorType.GoogleVertexAI, "--project-id", false),
+        (ConnectorType.GoogleVertexAI, "--region", false),
         // Docker Model Runner
         (ConnectorType.DockerModelRunner, "--base-url", false),
         (ConnectorType.DockerModelRunner, "--model", false),
@@ -193,6 +195,9 @@ public abstract class ArgumentOptions
                 settings.GoogleVertexAI ??= new GoogleVertexAISettings();
                 settings.GoogleVertexAI.ApiKey = googleVertexAI.ApiKey ?? settings.GoogleVertexAI.ApiKey;
                 settings.GoogleVertexAI.Model = googleVertexAI.Model ?? settings.GoogleVertexAI.Model;
+                settings.GoogleVertexAI.AccessToken = googleVertexAI.AccessToken ?? settings.GoogleVertexAI.AccessToken;
+                settings.GoogleVertexAI.ProjectId = googleVertexAI.ProjectId ?? settings.GoogleVertexAI.ProjectId;
+                settings.GoogleVertexAI.Region = googleVertexAI.Region ?? settings.GoogleVertexAI.Region;
                 break;
             case DockerModelRunnerArgumentOptions dockerModelRunner:
                 settings.DockerModelRunner ??= new DockerModelRunnerSettings();
