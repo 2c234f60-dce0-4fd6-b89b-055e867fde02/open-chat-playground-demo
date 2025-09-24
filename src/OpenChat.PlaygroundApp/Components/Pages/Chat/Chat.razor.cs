@@ -23,6 +23,11 @@ public partial class Chat : ComponentBase, IDisposable
     [Inject]
     public required NavigationManager Nav { get; set; }
 
+    [Inject]
+    public required OpenChat.PlaygroundApp.Abstractions.ConnectorTypeInfo ConnectorTypeInfo { get; set; }
+
+    public string ConnectorTypeName => ConnectorTypeInfo.Name;
+
     protected override void OnInitialized()
     {
         messages.Add(new(ChatRole.System, SystemPrompt));
@@ -43,9 +48,9 @@ public partial class Chat : ComponentBase, IDisposable
 
         await InvokeAsync(StateHasChanged);
 
+        // 👉👉 아래 구문에서 언제나 `GetStreamingResponseAsync` 메서드를 호출 👈👈
         await foreach (var update in ChatClient.GetStreamingResponseAsync([.. messages], chatOptions, currentResponseCancellation.Token))
         {
-            messages.AddMessages(update, filter: c => c is not TextContent);
             responseText.Text += update.Text;
             ChatMessageItem.NotifyChanged(currentResponseMessage);
         }

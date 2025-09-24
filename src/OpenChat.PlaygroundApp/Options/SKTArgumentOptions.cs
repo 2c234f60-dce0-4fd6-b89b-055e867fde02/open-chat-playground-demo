@@ -3,11 +3,9 @@ using OpenChat.PlaygroundApp.Configurations;
 
 namespace OpenChat.PlaygroundApp.Options;
 
-/// <summary>
-/// This represents the argument options entity for Anthropic Claude.
-/// </summary>
-public class AnthropicArgumentOptions : ArgumentOptions
+public class SKTArgumentOptions : ArgumentOptions
 {
+    public string? BaseUrl { get; set; }
     public string? ApiKey { get; set; }
     public string? Model { get; set; }
 
@@ -15,15 +13,15 @@ public class AnthropicArgumentOptions : ArgumentOptions
     {
         var settings = new AppSettings();
         config.Bind(settings);
-        var anthropic = settings.Anthropic;
-        this.ApiKey ??= anthropic?.ApiKey;
-        this.Model ??= anthropic?.Model;
+        var skt = settings.SKT;
+        this.BaseUrl ??= skt?.BaseUrl;
+        this.Model ??= skt?.Model;
         for (var i = 0; i < args.Length; i++)
         {
             switch (args[i])
             {
-                case "--api-key":
-                    if (i + 1 < args.Length) this.ApiKey = args[++i];
+                case "--base-url":
+                    if (i + 1 < args.Length) this.BaseUrl = args[++i];
                     break;
                 case "--model":
                     if (i + 1 < args.Length) this.Model = args[++i];

@@ -27,7 +27,12 @@ public abstract class ArgumentOptions
         // Google Vertex AI
         (ConnectorType.GoogleVertexAI, "--api-key", false),
         (ConnectorType.GoogleVertexAI, "--model", false),
+        (ConnectorType.GoogleVertexAI, "--access-token", false),
+        (ConnectorType.GoogleVertexAI, "--project-id", false),
+        (ConnectorType.GoogleVertexAI, "--region", false),
         // Docker Model Runner
+        (ConnectorType.DockerModelRunner, "--base-url", false),
+        (ConnectorType.DockerModelRunner, "--model", false),
         // Foundry Local
         (ConnectorType.FoundryLocal, "--alias", false),
         // Hugging Face
@@ -43,6 +48,15 @@ public abstract class ArgumentOptions
         (ConnectorType.LG, "--base-url", false),
         (ConnectorType.LG, "--model", false),
         // Naver
+        (ConnectorType.Naver, "--base-url", false),
+        (ConnectorType.Naver, "--api-key", false),
+        (ConnectorType.Naver, "--model", false),
+        // NC
+        (ConnectorType.NC, "--base-url", false),
+        (ConnectorType.NC, "--model", false),
+        // SKT
+        (ConnectorType.SKT, "--base-url", false),
+        (ConnectorType.SKT, "--model", false),
         // OpenAI
         (ConnectorType.OpenAI, "--api-key", false),
         (ConnectorType.OpenAI, "--model", false),
@@ -171,68 +185,76 @@ public abstract class ArgumentOptions
                 settings.AzureAIFoundry.ApiKey = azureAIFoundry.ApiKey ?? settings.AzureAIFoundry.ApiKey;
                 settings.AzureAIFoundry.DeploymentName = azureAIFoundry.DeploymentName ?? settings.AzureAIFoundry.DeploymentName;
                 break;
-
             case GitHubModelsArgumentOptions github:
                 settings.GitHubModels ??= new GitHubModelsSettings();
                 settings.GitHubModels.Endpoint = github.Endpoint ?? settings.GitHubModels.Endpoint;
                 settings.GitHubModels.Token = github.Token ?? settings.GitHubModels.Token;
                 settings.GitHubModels.Model = github.Model ?? settings.GitHubModels.Model;
                 break;
-            
             case GoogleVertexAIArgumentOptions googleVertexAI:
                 settings.GoogleVertexAI ??= new GoogleVertexAISettings();
                 settings.GoogleVertexAI.ApiKey = googleVertexAI.ApiKey ?? settings.GoogleVertexAI.ApiKey;
                 settings.GoogleVertexAI.Model = googleVertexAI.Model ?? settings.GoogleVertexAI.Model;
+                settings.GoogleVertexAI.AccessToken = googleVertexAI.AccessToken ?? settings.GoogleVertexAI.AccessToken;
+                settings.GoogleVertexAI.ProjectId = googleVertexAI.ProjectId ?? settings.GoogleVertexAI.ProjectId;
+                settings.GoogleVertexAI.Region = googleVertexAI.Region ?? settings.GoogleVertexAI.Region;
                 break;
-
-            // case DockerModelRunnerArgumentOptions dockerModelRunner:
-            //     break;
-
+            case DockerModelRunnerArgumentOptions dockerModelRunner:
+                settings.DockerModelRunner ??= new DockerModelRunnerSettings();
+                settings.DockerModelRunner.BaseUrl = dockerModelRunner.BaseUrl ?? settings.DockerModelRunner.BaseUrl;
+                settings.DockerModelRunner.Model = dockerModelRunner.Model ?? settings.DockerModelRunner.Model;
+                break;
             case FoundryLocalArgumentOptions foundryLocal:
                 settings.FoundryLocal ??= new FoundryLocalSettings();
                 settings.FoundryLocal.Alias = foundryLocal.Alias ?? settings.FoundryLocal.Alias;
                 break;
-
             case HuggingFaceArgumentOptions huggingFace:
                 settings.HuggingFace ??= new HuggingFaceSettings();
                 settings.HuggingFace.BaseUrl = huggingFace.BaseUrl ?? settings.HuggingFace.BaseUrl;
                 settings.HuggingFace.Model = huggingFace.Model ?? settings.HuggingFace.Model;
                 break;
-            
             case OllamaArgumentOptions ollama:
                 settings.Ollama ??= new OllamaSettings();
                 settings.Ollama.BaseUrl = ollama.BaseUrl ?? settings.Ollama.BaseUrl;
                 settings.Ollama.Model = ollama.Model ?? settings.Ollama.Model;
                 break;
-
             case AnthropicArgumentOptions anthropic:
                 settings.Anthropic ??= new AnthropicSettings();
                 settings.Anthropic.ApiKey = anthropic.ApiKey ?? settings.Anthropic.ApiKey;
                 settings.Anthropic.Model = anthropic.Model ?? settings.Anthropic.Model;
                 break;
-
             case LGArgumentOptions lg:
                 settings.LG ??= new LGSettings();
                 settings.LG.BaseUrl = lg.BaseUrl ?? settings.LG.BaseUrl;
                 settings.LG.Model = lg.Model ?? settings.LG.Model;
                 break;
-
-            // case NaverArgumentOptions naver:
-            //     break;
-
+            case NaverArgumentOptions naver:
+                settings.Naver ??= new NaverSettings();
+                settings.Naver.BaseUrl = naver.BaseUrl ?? settings.Naver.BaseUrl;
+                settings.Naver.ApiKey = naver.ApiKey ?? settings.Naver.ApiKey;
+                settings.Naver.Model = naver.Model ?? settings.Naver.Model;
+                break;
+            case NCArgumentOptions nc:
+                settings.NC ??= new NCSettings();
+                settings.NC.BaseUrl = nc.BaseUrl ?? settings.NC.BaseUrl;
+                settings.NC.Model = nc.Model ?? settings.NC.Model;
+                break;
+            case SKTArgumentOptions skt:
+                settings.SKT ??= new SKTSettings();
+                settings.SKT.BaseUrl = skt.BaseUrl ?? settings.SKT.BaseUrl;
+                settings.SKT.Model = skt.Model ?? settings.SKT.Model;
+                break;
             case OpenAIArgumentOptions openai:
                 settings.OpenAI ??= new OpenAISettings();
                 settings.OpenAI.ApiKey = openai.ApiKey ?? settings.OpenAI.ApiKey;
                 settings.OpenAI.Model = openai.Model ?? settings.OpenAI.Model;
                 break;
-
             case UpstageArgumentOptions upstage:
                 settings.Upstage ??= new UpstageSettings();
                 settings.Upstage.BaseUrl = upstage.BaseUrl ?? settings.Upstage.BaseUrl;
                 settings.Upstage.ApiKey = upstage.ApiKey ?? settings.Upstage.ApiKey;
                 settings.Upstage.Model = upstage.Model ?? settings.Upstage.Model;
                 break;
-
             default:
                 break;
         }
@@ -260,7 +282,7 @@ public abstract class ArgumentOptions
         Console.WriteLine("  --connector-type|-c  The connector type. Supporting connectors are:");
         Console.WriteLine("                       - AmazonBedrock, AzureAIFoundry, GitHubModels, GoogleVertexAI");
         Console.WriteLine("                       - DockerModelRunner, FoundryLocal, HuggingFace, Ollama");
-        Console.WriteLine("                       - Anthropic, LG, Naver, OpenAI, Upstage");
+        Console.WriteLine("                       - Anthropic, LG, Naver, NC, SKT, OpenAI, Upstage");
         Console.WriteLine();
         DisplayHelpForAmazonBedrock();
         DisplayHelpForAzureAIFoundry();
@@ -273,9 +295,33 @@ public abstract class ArgumentOptions
         DisplayHelpForAnthropic();
         DisplayHelpForLG();
         DisplayHelpForNaver();
+        DisplayHelpForNC();
+        DisplayHelpForSKT();
         DisplayHelpForOpenAI();
         DisplayHelpForUpstage();
         Console.WriteLine("  --help|-h            Show this help message.");
+    }
+
+    private static void DisplayHelpForNC()
+    {
+        var foregroundColor = Console.ForegroundColor;
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
+        Console.WriteLine("  ** NC: **");
+        Console.ForegroundColor = foregroundColor;
+        Console.WriteLine("  --base-url           The NC API endpoint URL.");
+        Console.WriteLine("  --model              The NC model name.");
+        Console.WriteLine();
+    }
+
+    private static void DisplayHelpForSKT()
+    {
+        var foregroundColor = Console.ForegroundColor;
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
+        Console.WriteLine("  ** SKT: **");
+        Console.ForegroundColor = foregroundColor;
+        Console.WriteLine("  --base-url           The SKT API endpoint URL.");
+        Console.WriteLine("  --model              The SKT model name.");
+        Console.WriteLine();
     }
 
     /// <summary>
@@ -345,8 +391,10 @@ public abstract class ArgumentOptions
         Console.WriteLine("  ** Google Vertex AI: **");
         Console.ForegroundColor = foregroundColor;
 
-        Console.WriteLine("  TBD");
-        Console.WriteLine();
+    Console.WriteLine("  --endpoint           The Google Vertex AI endpoint URL.");
+    Console.WriteLine("  --api-key            The Google Vertex AI API key.");
+    Console.WriteLine("  --model              The model name for Vertex AI.");
+    Console.WriteLine();
     }
 
     private static void DisplayHelpForDockerModelRunner()
@@ -356,8 +404,9 @@ public abstract class ArgumentOptions
         Console.WriteLine("  ** Docker Model Runner: **");
         Console.ForegroundColor = foregroundColor;
 
-        Console.WriteLine("  TBD");
-        Console.WriteLine();
+    Console.WriteLine("  --base-url           The Docker Model Runner base URL. Default to 'http://localhost:11434'");
+    Console.WriteLine("  --model              The model name for Docker Model Runner.");
+    Console.WriteLine();
     }
 
     private static void DisplayHelpForFoundryLocal()
@@ -367,8 +416,8 @@ public abstract class ArgumentOptions
         Console.WriteLine("  ** Foundry Local: **");
         Console.ForegroundColor = foregroundColor;
 
-        Console.WriteLine("  TBD");
-        Console.WriteLine();
+    Console.WriteLine("  --alias              The alias for Foundry Local model.");
+    Console.WriteLine();
     }
 
     private static void DisplayHelpForHuggingFace()
@@ -414,7 +463,8 @@ public abstract class ArgumentOptions
         Console.WriteLine("  ** LG: **");
         Console.ForegroundColor = foregroundColor;
 
-        Console.WriteLine("  TBD");
+        Console.WriteLine("  --base-url           The endpoint URL. Default to 'http://localhost:11434'");
+        Console.WriteLine("  --model              The model name. Default to 'hf.co/LG/exaone-4.0-1.2b'");
         Console.WriteLine();
     }
 
@@ -425,8 +475,10 @@ public abstract class ArgumentOptions
         Console.WriteLine("  ** Naver: **");
         Console.ForegroundColor = foregroundColor;
 
-        Console.WriteLine("  TBD");
-        Console.WriteLine();
+    Console.WriteLine("  --base-url           The Naver API endpoint URL.");
+    Console.WriteLine("  --api-key            The Naver API key.");
+    Console.WriteLine("  --model              The Naver model name.");
+    Console.WriteLine();
     }
 
     private static void DisplayHelpForOpenAI()

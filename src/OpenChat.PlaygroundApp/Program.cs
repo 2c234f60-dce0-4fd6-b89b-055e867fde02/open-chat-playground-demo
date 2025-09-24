@@ -1,9 +1,15 @@
 using Microsoft.Extensions.AI;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 
 using OpenChat.PlaygroundApp.Abstractions;
 using OpenChat.PlaygroundApp.Components;
 
+using OpenTelemetry.Trace;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.AddServiceDefaults();
 
 var config = builder.Configuration;
 var settings = ArgumentOptions.Parse(config, args);
@@ -13,13 +19,29 @@ if (settings.Help == true)
     return;
 }
 
+builder.Services.AddSingleton(new OpenChat.PlaygroundApp.Abstractions.ConnectorTypeInfo(settings.ConnectorType.ToString()));
+
 builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
+// Configure OpenTelemetry
+string sourceName = Guid.NewGuid().ToString();
+TracerProvider tracerProvider = OpenTelemetry.Sdk.CreateTracerProviderBuilder()
+    .AddSource(sourceName)
+    .AddConsoleExporter()
+    .Build();
+
+// Configure Language Model Client
 var chatClient = await LanguageModelConnector.CreateChatClientAsync(settings);
+IDistributedCache cache = new MemoryDistributedCache(Options.Create(new MemoryDistributedCacheOptions()));
 
 builder.Services.AddChatClient(chatClient)
+                .UseDistributedCache(cache)
                 .UseFunctionInvocation()
+                .UseOpenTelemetry(
+                    sourceName: sourceName,
+                    configure: c => c.EnableSensitiveData = true
+                )
                 .UseLogging();
 
 var app = builder.Build();
