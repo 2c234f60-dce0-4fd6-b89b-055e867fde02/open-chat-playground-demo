@@ -36,8 +36,8 @@ public class GoogleVertexAIConnector(AppSettings settings) : LanguageModelConnec
         return await Task.FromResult(model.AsIChatClient()).ConfigureAwait(false);
 
         // 변경2 : GoogleAI 사용
-        // var googleAI = new GoogleAI(accessToken: settings!.AccessToken!);
-        // var model = googleAI.GenerativeModel(model: settings.Model!);
-        // return await Task.FromResult(model.AsIChatClient()).ConfigureAwait(false);
+        //var googleAI = new GoogleAI(accessToken: settings!.AccessToken!);
+        //var model = googleAI.GenerativeModel(model: settings.Model!);
+        //return await Task.FromResult(model.AsIChatClient()).ConfigureAwait(false);
     }
 }
